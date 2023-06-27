@@ -16,20 +16,18 @@ model = cv2.dnn.readNetFromCaffe('pose_deploy.prototxt', 'pose_iter_584000.caffe
 # Loop through the frames from the camera
 while True:
     # Read a new frame from the camera
-    ret, frame = cap.read()
+    ret, frame = cap.read()     # frame: np array with shape (480, 640, 3)
 
     # Break the loop if we have reached the end of the video
     if not ret:
         break
-
+    print(type(frame))
+    print(frame.shape)
     # Input the frame to the model
     blob = cv2.dnn.blobFromImage(frame, 1.0, (368, 368), (127.5, 127.5, 127.5), swapRB=True, crop=False)
     model.setInput(blob)
-    output = model.forward()
-    print("----------------")
-    print(type(output))
-    print(output.shape)
-
+    output = model.forward()    # Output: np array with shape (1, 78, 46, 46)
+    
     # Display the frame in the new window
     cv2.imshow(window_name, frame)
 
